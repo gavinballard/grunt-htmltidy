@@ -1,50 +1,53 @@
 /*
  * grunt-htmltidy
- * https://github.com/gav/grunt-htmltidy
+ * http://gruntjs.com/
  *
- * Copyright (c) 2014 Gavin Ballard
+ * Copyright (c) 2014 Gavin Ballard, contributors
  * Licensed under the MIT license.
  */
 
 'use strict';
+var chalk = require('chalk');
+var prettyBytes = require('pretty-bytes');
+var tidy = require('htmltidy').tidy;
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+  grunt.registerMultiTask('htmltidy', 'Tidy HTML', function () {
+    var options = this.options();
+    var async = grunt.util.async;
+    var done = this.async();
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+    async.forEach(this.files, function(file, asyncCallback) {
+      var src = file.src[0];
 
-  grunt.registerMultiTask('htmltidy', 'Tidy HTML using htmltidy.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
+      if (!grunt.file.exists(src || ' ')) {
+        return grunt.log.warn('Source file "' + chalk.cyan(src) + '" not found.');
+      }
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
+      var untidied = grunt.file.read(src);
+
+      if (untidied.length === 0) {
+        return grunt.log.warn('Destination ' + chalk.cyan(src) + ' not written because source file was empty.');
+      }
+
+      // Make asynchronous call to tidy()
+      tidy(untidied, options, function(err, tidied) {
+        if(err) {
+          grunt.warn(file.src + '\n' + err);
+          return asyncCallback(err);
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
 
-      // Handle options.
-      src += options.punctuation;
+        if (tidied.length === 0) {
+          return grunt.log.warn('Destination ' + chalk.cyan(src) + ' not written because there was nothing to tidy.');
+        }
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+        grunt.file.write(file.dest, tidied);
+        grunt.log.writeln('Tidied ' + chalk.cyan(file.dest) + ' ' + prettyBytes(untidied.length) + ' → ' + prettyBytes(tidied.length));
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+        asyncCallback();
+      }, function(err) {
+        done(!err);
+      });
     });
   });
-
 };

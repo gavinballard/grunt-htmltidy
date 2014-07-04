@@ -30,20 +30,15 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     htmltidy: {
-      default_options: {
-        options: {
-        },
+      options: {},
+      compile: {
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/test.html': ['test/fixtures/test.html']
         }
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
+      empty: {
         files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/idontexist.html': ['test/fixtures/idontexist.html']
         }
       }
     },
