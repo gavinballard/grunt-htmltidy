@@ -10,6 +10,7 @@
 var chalk = require('chalk');
 var prettyBytes = require('pretty-bytes');
 var tidy = require('htmltidy').tidy;
+var eachAsync = require('each-async');
 
 module.exports = function (grunt) {
 
@@ -17,17 +18,17 @@ module.exports = function (grunt) {
 
     // Set up task options and configuration.
     var options = this.options();
-    var async = grunt.util.async;
     var done = this.async();
 
     /**
-     * Iterator function to apply to each input file with async.forEach().
+     * Iterator function to apply to each input file with eachAsync().
      *
      * @param file The input file object provided by Grunt to be processed.
+     * @param index The index of the input file.
      * @param callback The callback method supplied by sync.forEach() to be triggered on success or error.
      * @returns {*}
      */
-    var tidyFile = function(file, callback) {
+    var tidyFile = function(file, index, callback) {
       var untidied;
       var src = file.src[0];
 
@@ -40,8 +41,6 @@ module.exports = function (grunt) {
       // Read the contents of the file and check there's something in them.
       untidied = grunt.file.read(src);
       if(untidied.length === 0) {
-        grunt.log.writeln(src);
-        grunt.log.writeln(untidied);
         grunt.log.writeln('Destination ' + chalk.cyan(src) + ' not written because source file was empty.');
         return callback(false);
       }
@@ -69,7 +68,7 @@ module.exports = function (grunt) {
     };
 
     // Start the asynchronous iteration over files.
-    async.forEach(this.files, tidyFile, function(error) {
+    eachAsync(this.files, tidyFile, function(error) {
       done(error);
     });
   });

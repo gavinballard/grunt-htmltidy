@@ -36,6 +36,14 @@ module.exports = function(grunt) {
           'tmp/test.html': ['test/fixtures/test.html']
         }
       },
+      compileMultiple: {
+        files: [{
+          expand: true,
+          cwd: 'test/fixtures',
+          src: 'multiple*.html',
+          dest: 'tmp/'
+        }]
+      },
       empty: {
         files: {
           'tmp/idontexist.html': ['test/fixtures/idontexist.html']
