@@ -49,7 +49,7 @@ You can tidy multiple HTML files with the one target using Grunt's `files` array
 ```js
 grunt.initConfig({
   htmltidy: {
-    compileMultiple: {
+    tidyMultiple: {
       files: [{
         expand: true,
         cwd: 'input/path',
