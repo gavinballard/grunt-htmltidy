@@ -43,12 +43,32 @@ grunt.initConfig({
 ```
 
 
+### Examples
+You can tidy multiple HTML files with the one target using Grunt's `files` array syntax:
+
+```js
+grunt.initConfig({
+  htmltidy: {
+    compileMultiple: {
+      files: [{
+        expand: true,
+        cwd: 'input/path',
+        src: '**/*.html',
+        dest: 'output/path'
+      }]
+    }
+  }
+});
+```
+
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 
 ## Release History
 
+ * 2014-09-04   v0.2.0   Add multiple file support.
  * 2014-07-04   v0.1.0   Initial release.
 
 
