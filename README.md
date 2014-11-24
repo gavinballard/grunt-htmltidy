@@ -68,9 +68,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
- * 2014-09-04   v0.2.0   Add multiple file support.
- * 2014-07-04   v0.1.0   Initial release.
-
+Refer to the [change log](https://github.com/gavinballard/grunt-htmltidy/blob/master/CHANGELOG.md) for a full list of changes.
 
 ---
 
