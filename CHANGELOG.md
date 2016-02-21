@@ -2,8 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+No unrelased changes.
+
+## 0.2.1 - 2015-02-21
 ### Added
 - This new-format CHANGELOG, based on http://keepachangelog.com
+
+### Changed
+- Change Grunt peer dependency to work with Grunt 1.0
 
 ## 0.2.0 - 2014-09-04
 ### Added
