@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 No unrelased changes.
 
+## 0.2.2 - 2016-04-28
+### Changed
+- Fix a minor issue with log output (jwigley)
+
 ## 0.2.1 - 2015-02-21
 ### Added
 - This new-format CHANGELOG, based on http://keepachangelog.com
